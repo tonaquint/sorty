@@ -6,7 +6,7 @@ Using a simple syntax, it creates a basic "whitelist" of attributes that you per
 
 ## Installation
 
-```
+```ruby
 gem 'sorty', git: 'git@github.com:mark-d-holmberg/sorty.git'
 ```
 
@@ -14,7 +14,7 @@ gem 'sorty', git: 'git@github.com:mark-d-holmberg/sorty.git'
 
 The simple invocation's follow:
 
-```
+```ruby
 # app/models/lead.rb
 class Lead < ActiveRecord::Base
   sorty on: [:last_name, :first_name, :business_name],
@@ -32,7 +32,7 @@ Sorty will use reflection to try to determine the proper tables and what not.
 
 In the controller, you can invoke something like the following (here, I am using CanCan)
 
-```
+```ruby
 # app/controllers/leads_controller.rb
   class LeadsController < ApplicationController
     def index
@@ -53,7 +53,7 @@ Sorty provides a helper for easily creating a form to submit the Sorty parameter
 
 In your index template (or wherever you choose to have sorty-ing) you can use the following pattern:
 
-```
+```haml
 %table.table.table-striped.table-hover.table-condensed#leads
   %thead
     %th= sorty "business_name", Lead.human_attribute_name(:business_name), true
