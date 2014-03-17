@@ -2,6 +2,9 @@ module Sorty
   module SortyModel
 
     module ClassMethods
+      delegate :sorty_fields, to: :my_sorty_storage
+      delegate :sorty_references, to: :my_sorty_storage
+
       def setup_sorty(options={})
         self.my_sorty_storage = SortyStorage.new(options.try(:[], :on), options.try(:[], :references))
       end
@@ -38,8 +41,6 @@ module Sorty
     def self.included(receiver)
       receiver.extend ClassMethods
       receiver.send :cattr_accessor, :my_sorty_storage
-      delegate :sorty_fields, to: :my_sorty_storage
-      delegate :sorty_references, to: :my_sorty_storage
     end
 
   end
