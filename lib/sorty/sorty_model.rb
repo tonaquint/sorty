@@ -2,7 +2,7 @@ module Sorty
   module SortyModel
 
     module ClassMethods
-      def setup_sorty_model(options={})
+      def setup_sorty(options={})
         self.my_sorty_storage = SortyStorage.new(options.try(:[], :on), options.try(:[], :references))
       end
 
@@ -37,7 +37,7 @@ module Sorty
 
     def self.included(receiver)
       receiver.extend ClassMethods
-      receiver.send self.cattr_accessor, :my_sorty_storage
+      receiver.send :cattr_accessor, :my_sorty_storage
       delegate :sorty_fields, to: :my_sorty_storage
       delegate :sorty_references, to: :my_sorty_storage
     end
@@ -53,11 +53,5 @@ module Sorty
       @sorty_fields = fields
       @sorty_references = references
     end
-  end
-end
-
-if defined? ActiveRecord::Base
-  ActiveRecord::Base.class_eval do
-    include Sorty::SortyModel
   end
 end
