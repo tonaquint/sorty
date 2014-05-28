@@ -29,7 +29,7 @@ module Sorty
           else
             if self.sorty_fields.include?(column.to_sym) && self.valid_directions.include?(direction)
               # Actual database columns
-              result = result.order(column + " " + direction)
+              result = result.order([self.table_name, column].join(".") + " " + direction)
             end
           end
         end
