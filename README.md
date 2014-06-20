@@ -56,10 +56,10 @@ In your index template (or wherever you choose to have sorty-ing) you can use th
 ```haml
 %table.table.table-striped.table-hover.table-condensed#leads
   %thead
-    %th= sorty "business_name", Lead.human_attribute_name(:business_name), true
+    %th= sorty "business_name", Lead.human_attribute_name(:business_name), {default: true}
     %th= sorty "last_name", Lead.human_attribute_name(:last_name)
     %th= sorty "first_name", Lead.human_attribute_name(:first_name)
-    %th= sorty "assignable", Lead.human_attribute_name(:assignable)
+    %th= sorty "assignable", Lead.human_attribute_name(:assignable), {anchor: 'leads'}
   %tbody
     - @leads.each do |lead|
       %tr
