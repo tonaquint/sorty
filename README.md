@@ -7,7 +7,7 @@ Using a simple syntax, it creates a basic "whitelist" of attributes that you per
 ## Installation
 
 ```ruby
-gem 'sorty', git: 'git@github.com:mark-d-holmberg/sorty.git'
+gem 'sorty', git: 'https://github.com/PhoenixfireDevelopment/sorty.git'
 ```
 
 ## The Model
@@ -69,4 +69,14 @@ In your index template (or wherever you choose to have sorty-ing) you can use th
         %td= lead.assignable.full_name
 ```
 
-The `sorty` helper takes the following parameters: `column`, `title`, and `default`. If `default` is set, it will sort records the opposite direction.
+The `sorty` helper takes the following parameters: `column`, `title`, and hash of options.
+
+#### Options Hash
+
+`default: true` (true/false)
+
+If `default` is set, it will sort records the opposite direction.
+
+`anchor: 'leads'` (Bootstrap tab ID)
+
+If the `anchor` parameter is set, it will allow sorty to working inside Bootstrap tabs.
