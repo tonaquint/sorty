@@ -18,13 +18,16 @@ The simple invocation's follow:
 # app/models/lead.rb
 class Lead < ActiveRecord::Base
   sorty on: [:last_name, :first_name, :business_name],
-    references: {assignable: "full_name"}
+    references: [
+      {name: "city", table_name: "primary_address", column_name: "city"},
+      {name: "postal_code", table_name: "primary_address", column_name: "postal_code"},
+    ]
 end
 ```
 
 The `on` parameter indicates to Sorty that it is an actual database backed column. The `references` hash indicates an association
-you plan to sort by, in this case, a Lead is assigned to a User (assignable), and we're going to order by the `full_name` attribute
-on the `User` table.
+you plan to sort by, in this case, a Lead has a `primary_address` with columns `city` and `postal_code`. Since there is only one
+association `primary_address` this adds the ability to sort by multiple columns.
 
 Sorty will use reflection to try to determine the proper tables and what not.
 
