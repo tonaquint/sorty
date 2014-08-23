@@ -23,7 +23,6 @@ module Sorty
       end
       if params[:search].try(:[], :sorty).present?
         if params[:search][:sorty].try(:[], :sort).present?
-          # klass = self.controller_name.classify.constantize
           # We assume the controller is named the same thing as the class
           if my_klass.sorty_references.include?(params[:search][:sorty][:sort].to_sym)
             params[:search][:sorty][:sort]

@@ -34,14 +34,10 @@ module Sorty
         if (self.column_names.include?(column) && self.sorty_fields.include?(column.to_sym)) || has_matching_reference
 
           # We know it's either a native field or a reflection (association)
-          # if self.sorty_references.include?(column.to_sym) && self.valid_directions.include?(direction)
           if has_matching_reference && self.valid_directions.include?(direction)
             # assocations that get referenced
             my_klass = reference.sorty_parent_klass.reflect_on_association(reference.sorty_association_name.to_sym).klass
             result = result.includes(reference.sorty_association_name.to_sym).order("#{my_klass.table_name}.#{reference.sorty_column_name} #{direction}").references(reference.sorty_association_name.to_sym)
-
-            # my_klass = self.reflect_on_association(column.to_sym).klass
-            # result = result.includes(column.to_sym).order("#{my_klass.table_name}.#{self.sorty_references[column.to_sym]} #{direction}").references(column.to_sym)
           else
             if self.sorty_fields.include?(column.to_sym) && self.valid_directions.include?(direction)
               # Actual database columns
