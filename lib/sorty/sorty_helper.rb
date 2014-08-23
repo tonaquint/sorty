@@ -17,6 +17,7 @@ module Sorty
           sorty: {
             sort: column,
             direction: direction,
+            sorty_anchor: anchor,
           },
         },
       }

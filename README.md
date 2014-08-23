@@ -83,3 +83,35 @@ If `default` is set, it will sort records the opposite direction.
 `anchor: 'leads'` (Bootstrap tab ID)
 
 If the `anchor` parameter is set, it will allow sorty to working inside Bootstrap tabs.
+
+
+### Multiple Bootstrap Tabs
+
+You can sorty inside multiple tabs, although if you switch tabs, it won't persist.
+
+```ruby
+  def show
+    @devices = @customer.devices
+
+    # Search based on my criteria
+    if params[:search].try(:[], :query).present?
+      @devices = @devices.search(params[:search][:query])
+    end
+
+    # Order by Sorty Params
+    if params[:search].try(:[], :sorty).present?
+      if sorty_anchor.present?
+        case sorty_anchor
+        when 'devices'
+          @@sorty_model_name = @devices.klass.to_s
+          @devices = @devices.sorty_order(sort_column, sort_direction)
+        # TODO: add other associations here like invoices
+        end
+      end
+    else
+      @devices = @devices.ordered
+    end
+
+    @devices = @devices.page(params[:devices_page])
+  end
+```
