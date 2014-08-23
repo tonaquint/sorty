@@ -15,26 +15,25 @@ module Sorty
     private
 
     def sort_column
+      # Find out if they specified the sorty klass name
+      if self.sorty_model_name.present?
+        my_klass = self.sorty_model_name.classify.constantize
+      else
+        my_klass = self.controller_name.classify.constantize
+      end
       if params[:search].try(:[], :sorty).present?
         if params[:search][:sorty].try(:[], :sort).present?
-          if self.sorty_model_name.present?
-            # We had to explicitly specify the model name
-            if self.sorty_model_name.classify.constantize.sorty_references.include?(params[:search][:sorty][:sort].to_sym)
-              params[:search][:sorty][:sort]
-            end
+          # klass = self.controller_name.classify.constantize
+          # We assume the controller is named the same thing as the class
+          if my_klass.sorty_references.include?(params[:search][:sorty][:sort].to_sym)
+            params[:search][:sorty][:sort]
           else
-            klass = self.controller_name.classify.constantize
-            # We assume the controller is named the same thing as the class
-            if klass.sorty_references.include?(params[:search][:sorty][:sort].to_sym)
+            if my_klass.column_names.include?(params[:search][:sorty][:sort]) && my_klass.sorty_fields.include?(params[:search][:sorty][:sort].to_sym)
+              # Make sure the database actually has that column and also that we explicitly say that we can sorty by that column
               params[:search][:sorty][:sort]
             else
-              if klass.column_names.include?(params[:search][:sorty][:sort]) && klass.sorty_fields.include?(params[:search][:sorty][:sort].to_sym)
-                # Make sure the database actually has that column and also that we explicitly say that we can sorty by that column
-                params[:search][:sorty][:sort]
-              else
-                # Don't create the sorty link/form because this thing is bogus
-                nil
-              end
+              # Don't create the sorty link/form because this thing is bogus
+              nil
             end
           end
         end
