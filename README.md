@@ -103,7 +103,7 @@ You can sorty inside multiple tabs, although if you switch tabs, it won't persis
       if sorty_anchor.present?
         case sorty_anchor
         when 'devices'
-          @@sorty_model_name = @devices.klass.to_s
+          sorty_association_klass("Device")
           @devices = @devices.sorty_order(sort_column, sort_direction)
         # TODO: add other associations here like invoices
         end
