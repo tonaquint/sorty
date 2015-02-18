@@ -4,6 +4,7 @@ module Sorty
     module ClassMethods
       def sorty_model(model_name=nil)
         self.class_variable_set(:@@sorty_model_name, model_name)
+        before_action :setup_klass
       end
     end
 
@@ -16,14 +17,18 @@ module Sorty
 
     private
 
+    def setup_klass
+      @sorty_model_name = self.class.class_variable_get(:@@sorty_model_name)
+    end
+
     def sorty_association_klass(my_klass_name)
       @sorty_association_klass_name = my_klass_name
     end
 
     def sort_column
       # Find out if they specified the sorty klass name
-      if self.sorty_model_name.present?
-        my_klass = self.sorty_model_name.classify.constantize
+      if @sorty_model_name.present?
+        my_klass = @sorty_model_name.classify.constantize
       elsif sorty_association_klass_name.present?
         my_klass = sorty_association_klass_name.classify.constantize
       else
