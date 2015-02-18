@@ -2,7 +2,7 @@ module Sorty
   module SortyControllerAdditions
 
     module ClassMethods
-      def sorty_model(model_name)
+      def sorty_model(model_name=nil)
         self.class_variable_set(:@@sorty_model_name, model_name)
       end
     end
