@@ -2,27 +2,28 @@ module Sorty
   module SortyControllerAdditions
 
     module ClassMethods
-      def sorty_model(model_name=nil)
-        self.class_variable_set(:@@sorty_model_name, model_name)
-        before_action :setup_klass
-      end
     end
 
     def self.included(base)
       base.extend ClassMethods
       base.helper_method :sort_column, :sort_direction, :sorty_model, :sorty_anchor, :sorty_anchor?
+      base.send(:before_action, :setup_model_name)
     end
 
     attr_accessor :sorty_association_klass_name
 
     private
 
-    def setup_klass
-      @sorty_model_name = self.class.class_variable_get(:@@sorty_model_name)
-    end
-
     def sorty_association_klass(my_klass_name)
       @sorty_association_klass_name = my_klass_name
+    end
+
+    def sorty_model(model_name=nil)
+      @sorty_model_name = model_name
+    end
+
+    def setup_model_name
+      send(:sorty_model, nil)
     end
 
     def sort_column
@@ -79,6 +80,5 @@ end
 if defined? ActionController::Base
   ActionController::Base.class_eval do
     include Sorty::SortyControllerAdditions
-    self.send :cattr_accessor, :sorty_model_name
   end
 end
